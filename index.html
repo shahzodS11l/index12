@@ -1,77 +1,453 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RAVSHANOV</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RAVSHANOV</title>
+  <style>
+    :root{
+      --bg:#07080c;
+      --card:#0d1020cc;
+      --text:#e9ecff;
+      --muted:#aab2ff;
+      --neon:#7c5cff;
+      --neon2:#22d3ee;
+      --danger:#ff4d6d;
+      --ok:#2dd4bf;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 700px at 20% 10%, #1b1f5a55, transparent 55%),
+                  radial-gradient(1000px 600px at 80% 30%, #0ea5e955, transparent 60%),
+                  radial-gradient(900px 700px at 50% 90%, #7c5cff33, transparent 60%),
+                  var(--bg);
+      color:var(--text);
+      overflow-x:hidden;
+    }
 
-<style>
+    /* animated particles */
+    .stars{
+      position:fixed; inset:0;
+      background-image:
+        radial-gradient(1px 1px at 10% 20%, #ffffffcc 50%, transparent 51%),
+        radial-gradient(1px 1px at 40% 70%, #ffffffaa 50%, transparent 51%),
+        radial-gradient(1px 1px at 80% 30%, #ffffff88 50%, transparent 51%),
+        radial-gradient(1px 1px at 60% 10%, #ffffff99 50%, transparent 51%),
+        radial-gradient(1px 1px at 25% 85%, #ffffff77 50%, transparent 51%),
+        radial-gradient(1px 1px at 90% 80%, #ffffffaa 50%, transparent 51%);
+      background-size: 900px 700px;
+      animation: drift 18s linear infinite;
+      opacity:.35;
+      pointer-events:none;
+      filter: blur(.1px);
+    }
+    @keyframes drift{
+      from{transform:translateY(0)}
+      to{transform:translateY(-40px)}
+    }
 
-body{
-background:black;
-color:white;
-text-align:center;
-font-family:Arial;
-padding-top:120px;
-}
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px 16px;
+      position:relative;
+      z-index:1;
+    }
 
-h1{
-font-size:50px;
-color:yellow;
-}
+    .card{
+      width:min(980px, 100%);
+      background: linear-gradient(180deg, #0f1430cc, #0b0d18cc);
+      border: 1px solid #7c5cff33;
+      box-shadow: 0 18px 60px #00000070, inset 0 0 0 1px #22d3ee10;
+      border-radius:22px;
+      overflow:hidden;
+      position:relative;
+    }
 
-p{
-font-size:20px;
-}
+    .glow{
+      position:absolute; inset:-2px;
+      background: radial-gradient(600px 260px at 20% 10%, #7c5cff55, transparent 60%),
+                  radial-gradient(650px 300px at 80% 30%, #22d3ee55, transparent 60%);
+      filter: blur(18px);
+      opacity:.7;
+      pointer-events:none;
+    }
 
-.btn{
-display:inline-block;
-padding:15px 30px;
-margin-top:30px;
-font-size:18px;
-background:#0088cc;
-color:white;
-text-decoration:none;
-border-radius:12px;
-transition:0.3s;
-}
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:18px 20px;
+      border-bottom:1px solid #ffffff10;
+      position:relative;
+      z-index:2;
+    }
 
-.btn:hover{
-background:#00aaff;
-transform:scale(1.05);
-}
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      user-select:none;
+    }
+    .logo{
+      width:42px; height:42px;
+      border-radius:14px;
+      background: linear-gradient(135deg, var(--neon), var(--neon2));
+      display:grid;
+      place-items:center;
+      box-shadow: 0 10px 30px #7c5cff40;
+      font-weight:900;
+      color:#07080c;
+      letter-spacing:.5px;
+    }
+    .brand h3{
+      margin:0;
+      font-size:14px;
+      color:var(--muted);
+      font-weight:700;
+    }
+    .brand h2{
+      margin:0;
+      font-size:18px;
+      letter-spacing:2px;
+    }
 
-.telegram-float{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#0088cc;
-color:white;
-padding:15px 20px;
-border-radius:50px;
-text-decoration:none;
-font-weight:bold;
-box-shadow:0 0 15px #0088cc;
-}
+    .pill{
+      font-size:12px;
+      color:#dbeafe;
+      padding:8px 12px;
+      border-radius:999px;
+      background: #ffffff10;
+      border:1px solid #ffffff18;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .dot{
+      width:8px;height:8px;border-radius:50%;
+      background: var(--ok);
+      box-shadow: 0 0 14px #2dd4bfaa;
+    }
 
-</style>
+    .grid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:18px;
+      padding:22px;
+      position:relative;
+      z-index:2;
+    }
+    @media (max-width: 840px){
+      .grid{grid-template-columns:1fr}
+    }
+
+    .hero{
+      padding:18px;
+      border-radius:18px;
+      background: #0b0f24aa;
+      border: 1px solid #ffffff10;
+    }
+
+    .kicker{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid #7c5cff44;
+      background:#7c5cff1a;
+      color:#e9ecff;
+      font-size:13px;
+      margin-bottom:12px;
+    }
+
+    .title{
+      margin:0 0 10px;
+      font-size: clamp(28px, 4.4vw, 46px);
+      line-height:1.05;
+      letter-spacing:1px;
+    }
+    .subtitle{
+      margin:0 0 18px;
+      color:#c7ccff;
+      font-size:15px;
+      line-height:1.5;
+      max-width:55ch;
+    }
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:10px;
+    }
+    .btn{
+      border:0;
+      cursor:pointer;
+      padding:12px 14px;
+      border-radius:14px;
+      font-weight:800;
+      letter-spacing:.2px;
+      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      user-select:none;
+      text-decoration:none;
+    }
+    .btn:active{transform: translateY(1px) scale(.99)}
+    .btn-primary{
+      color:#0a0b12;
+      background: linear-gradient(135deg, var(--neon), var(--neon2));
+      box-shadow: 0 14px 34px #7c5cff40;
+    }
+    .btn-primary:hover{box-shadow: 0 16px 46px #22d3ee30}
+    .btn-ghost{
+      color:var(--text);
+      background:#ffffff10;
+      border:1px solid #ffffff1a;
+    }
+    .btn-ghost:hover{background:#ffffff16}
+
+    .mini{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:10px;
+      margin-top:16px;
+    }
+    @media (max-width: 520px){
+      .mini{grid-template-columns:1fr}
+    }
+    .mini .box{
+      border-radius:16px;
+      background:#0d1020aa;
+      border:1px solid #ffffff10;
+      padding:12px;
+    }
+    .box b{display:block; font-size:14px; margin-bottom:6px}
+    .box span{color:#c7ccff; font-size:12px; line-height:1.35}
+
+    .side{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .panel{
+      border-radius:18px;
+      background:#0b0f24aa;
+      border:1px solid #ffffff10;
+      padding:16px;
+      position:relative;
+      overflow:hidden;
+    }
+    .panel h4{margin:0 0 10px; font-size:14px; color:#dbeafe; letter-spacing:.6px}
+    .panel p{margin:0; color:#c7ccff; font-size:13px; line-height:1.5}
+
+    .kbd{
+      margin-top:12px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .key{
+      font-size:12px;
+      color:#e9ecff;
+      padding:8px 10px;
+      border-radius:12px;
+      background:#ffffff10;
+      border:1px solid #ffffff1a;
+    }
+
+    .status{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin-top:10px;
+      padding-top:10px;
+      border-top:1px dashed #ffffff1a;
+    }
+    .badge{
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:12px;
+      background:#22d3ee1a;
+      border:1px solid #22d3ee33;
+      color:#dbeafe;
+      white-space:nowrap;
+    }
+
+    footer{
+      padding:16px 22px;
+      border-top:1px solid #ffffff10;
+      color:#aab2ff;
+      font-size:12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      position:relative;
+      z-index:2;
+    }
+
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:20px;
+      transform:translateX(-50%);
+      background:#0b0f24;
+      border:1px solid #ffffff14;
+      padding:12px 14px;
+      border-radius:14px;
+      box-shadow:0 18px 60px #00000070;
+      color:#e9ecff;
+      font-size:13px;
+      display:none;
+      z-index:9999;
+    }
+    .toast.show{display:block; animation: pop .18s ease}
+    @keyframes pop{
+      from{transform:translateX(-50%) translateY(6px); opacity:.2}
+      to{transform:translateX(-50%) translateY(0); opacity:1}
+    }
+  </style>
 </head>
-
 <body>
+  <div class="stars"></div>
 
-<h1>RAVSHANOV</h1>
+  <div class="wrap">
+    <div class="card">
+      <div class="glow"></div>
 
-<p>Mening birinchi professional saytim</p>
+      <header>
+        <div class="brand">
+          <div class="logo">R</div>
+          <div>
+            <h3>Portfolio / Landing</h3>
+            <h2>RAVSHANOV</h2>
+          </div>
+        </div>
+        <div class="pill"><span class="dot"></span> ONLINE • HTTPS</div>
+      </header>
 
-<a href="https://t.me/old_xvk" target="_blank" class="btn">
-📩 Kontakt
-</a>
+      <section class="grid">
+        <div class="hero">
+          <div class="kicker">⚡ Pro Mode • HTML + CSS + JS</div>
+          <h1 class="title">Salom! Men <span style="color:var(--neon2)">Shahzod</span>.</h1>
+          <p class="subtitle">
+            Bu mening birinchi professional landing sahifam. Bu yerda keyinchalik loyihalarim,
+            kontaktlarim va Telegram botlarim bo‘ladi. Bugundan boshlab — pro coder yo‘li!
+          </p>
 
-<br><br>
+          <div class="actions">
+            <a class="btn btn-primary" href="#projects" id="btnStart">🚀 Boshladik</a>
+            <button class="btn btn-ghost" id="btnCopy">🔗 Linkni nusxa ol</button>
+            <a class="btn btn-ghost" href="https://t.me/old_xvk" target="_blank">📩 Kontakt</a>
+          </div>
 
-<a href="https://t.me/old_xvk" target="_blank" class="telegram-float">
-Telegram
-</a>
+          <div class="mini" id="projects">
+            <div class="box">
+              <b>✅ 1-Loyiha</b>
+              <span>HTML sahifa + chiroyli dizayn. Keyin rasm, video, menyu qo‘shamiz.</span>
+            </div>
+            <div class="box">
+              <b>🤖 Telegram Bot</b>
+              <span>Keyingi bosqich: Python bilan bot yozamiz va pul ishlashga chiqamiz.</span>
+            </div>
+            <div class="box">
+              <b>💼 Portfolio</b>
+              <span>Bu sahifa keyinchalik sizning ishlaringizni ko‘rsatadigan “vitirina” bo‘ladi.</span>
+            </div>
+          </div>
+        </div>
 
+        <aside class="side">
+          <div class="panel">
+            <h4>🎯 Maqsad</h4>
+            <p>
+              Har kuni 1 soat kod yozish. Haftasiga 3 ta mini loyiha. 2–3 oyda freelance daraja.
+            </p>
+            <div class="status">
+              <span class="badge">HTML ✅</span>
+              <span class="badge">CSS ✅</span>
+              <span class="badge">JS 🔜</span>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h4>⌨️ Hotkeys (VS Code)</h4>
+            <p>Tez ishlash uchun eng kerakli tugmalar:</p>
+            <div class="kbd">
+              <span class="key">Ctrl + S</span>
+              <span class="key">Ctrl + Z</span>
+              <span class="key">Ctrl + /</span>
+              <span class="key">Alt + Shift + F</span>
+            </div>
+          </div>
+
+          <div class="panel" id="contact">
+            <h4>📌 Keyingi qadam</h4>
+            <p>
+              Xohlasangiz men sizga keyingi darsda:
+              <br>— menyu + animatsiya
+              <br>— telefon uchun responsive
+              <br>— “Telegram” tugma
+              <br>— kichik loyiha (mini portfolio)
+              <br>qilib beraman.
+            </p>
+            <div class="actions" style="margin-top:12px">
+              <button class="btn btn-primary" id="btnHi">👋 Salom deb yoz</button>
+              <a class="btn btn-ghost" href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'})">⬆️ Tepaga</a>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <footer>
+        <span>© <span id="year"></span> RAVSHANOV • Built on Vercel (HTTPS)</span>
+        <span style="opacity:.9">Made with ❤️ + Code</span>
+      </footer>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Nusxalandi ✅</div>
+
+  <script>
+    const toast = document.getElementById("toast");
+    const year = document.getElementById("year");
+    year.textContent = new Date().getFullYear();
+
+    function showToast(text){
+      toast.textContent = text;
+      toast.classList.add("show");
+      setTimeout(()=>toast.classList.remove("show"), 1400);
+    }
+
+    document.getElementById("btnCopy").addEventListener("click", async ()=>{
+      try{
+        await navigator.clipboard.writeText(window.location.href);
+        showToast("Link nusxalandi ✅");
+      }catch(e){
+        showToast("Nusxa bo‘lmadi 😅 (brauzer ruxsat bermadi)");
+      }
+    });
+
+    document.getElementById("btnHi").addEventListener("click", ()=>{
+      showToast("Salom! Pro coder bo‘lyapmiz 😎");
+    });
+
+    document.getElementById("btnStart").addEventListener("click", (e)=>{
+      // smooth scroll to projects
+      e.preventDefault();
+      document.getElementById("projects").scrollIntoView({behavior:"smooth"});
+      showToast("Boshladik 🚀");
+    });
+  </script>
 </body>
 </html>
